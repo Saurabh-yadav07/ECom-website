@@ -1,7 +1,7 @@
 import React from "react";
 import {Navbar, Container, Nav} from "react-bootstrap";
 
-function Header(){
+function Header({onShowCart}){
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -9,7 +9,7 @@ function Header(){
                 <Nav className="ms-auto">
                     <Nav.Link href="#">Store</Nav.Link>
                     <Nav.Link href="#">About</Nav.Link>
-                    <Nav.Link href="#">Cart</Nav.Link>
+                    <Nav.Link href="#" onClick={onShowCart}>Cart</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
