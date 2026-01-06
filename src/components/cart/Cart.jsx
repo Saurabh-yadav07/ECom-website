@@ -1,55 +1,58 @@
-import React from "react";
-import { Card,ListGroup,Button,Image, ListGroupItem, Modal, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap";
+import { Modal, ListGroup, Button, Image } from "react-bootstrap";
+import { useCart } from "../../context/cart-context";
 
-const cartItems = [
-  {
-    title: 'Colors',
-    price: 100,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
-    quantity: 2,
-  },
-  {
-    title: 'Black and white Colors',
-    price: 50,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
-    quantity: 3,
-  },
-  {
-    title: 'Yellow and Black Colors',
-    price: 70,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%203.png',
-    quantity: 1,
-  },
-];
+function Cart({ show, onHide }) {
+  const { cartItems, deleteFromCart } = useCart();
 
-function Cart ({show,onHide,onRemove}){
-    return (
-        <Modal show={show} onHide={onHide} size="lg">
-           <ModalHeader closeButton>
-            <ModalTitle>My Cart</ModalTitle>
-           </ModalHeader>
-           <ModalBody>
-             <ListGroup>
-               {cartItems.map((item,index)=>(
-                <ListGroupItem key={index} className="d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-3">
-                        <Image src={item.imageUrl} width={60} rounded/>
-                        <div>
-                            <h6>{item.title}</h6>
-                            <small>
-                                ${item.price}x{item.quantity}
-                            </small>
-                        </div>
-                    </div>
-                    <Button variant="danger" size="sm" onClick={()=>onRemove(index)}>
-                        Remove
-                    </Button>
-                </ListGroupItem>
-               ))}
-            </ListGroup>
-           </ModalBody>
-        </Modal>
-    )
+  const totalAmount = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  return (
+    <Modal show={show} onHide={onHide} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>My Cart</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        {cartItems.length === 0 ? (
+          <p className="text-center">Your cart is empty</p>
+        ) : (
+          <ListGroup>
+            {cartItems.map((item) => (
+              <ListGroup.Item
+                key={item.id}
+                className="d-flex justify-content-between align-items-center"
+              >
+                <div className="d-flex align-items-center gap-3">
+                  <Image src={item.imageUrl} width={60} rounded />
+                  <div>
+                    <h6>{item.title}</h6>
+                    <small>
+                      ₹{item.price} × {item.quantity}
+                    </small>
+                  </div>
+                </div>
+
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => deleteFromCart(item.id)}
+                >
+                  Remove
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+      </Modal.Body>
+
+      <Modal.Footer className="fw-bold">
+        Total: ₹{totalAmount}
+      </Modal.Footer>
+    </Modal>
+  );
 }
 
 export default Cart;
