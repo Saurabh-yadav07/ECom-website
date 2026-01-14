@@ -1,19 +1,28 @@
-import React from "react";
-import {Navbar, Container, Nav} from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
-function Header({onShowCart}){
-    return (
-        <Navbar bg="dark" variant="dark" expand="lg">
-            <Container>
-                <Navbar.Brand href="#">My Store</Navbar.Brand>
-                <Nav className="ms-auto">
-                    <Nav.Link href="#">Store</Nav.Link>
-                    <Nav.Link href="#">About</Nav.Link>
-                    <Nav.Link href="#" onClick={onShowCart}>Cart</Nav.Link>
-                </Nav>
-            </Container>
-        </Navbar>
-    );
+function Header({ onShowCart }) {
+  return (
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
+        <Navbar.Brand as={NavLink} to="/">
+          My Store
+        </Navbar.Brand>
+
+        <Nav className="ms-auto">
+          <Nav.Link as={NavLink} to="/">
+            Store
+          </Nav.Link>
+          <Nav.Link as={NavLink} to="/about">
+            About
+          </Nav.Link>
+          <Nav.Link onClick={onShowCart}>
+            Cart
+          </Nav.Link>
+        </Nav>
+      </Container>
+    </Navbar>
+  );
 }
 
 export default Header;
