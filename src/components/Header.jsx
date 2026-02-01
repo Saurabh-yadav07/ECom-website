@@ -13,9 +13,15 @@ function Header({ onShowCart }) {
           <Nav.Link as={NavLink} to="/">
             Store
           </Nav.Link>
+
           <Nav.Link as={NavLink} to="/about">
             About
           </Nav.Link>
+
+          <Nav.Link as={NavLink} to="/contact">
+            Contact
+          </Nav.Link>
+
           <Nav.Link onClick={onShowCart}>
             Cart
           </Nav.Link>
