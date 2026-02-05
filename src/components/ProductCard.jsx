@@ -1,4 +1,5 @@
 import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useCart } from "../context/cart-context";
 
 export default function ProductCard({ product }) {
@@ -7,9 +8,15 @@ export default function ProductCard({ product }) {
 
   return (
     <Card className="h-100 shadow-sm">
-      <Card.Img variant="top" src={imageUrl} />
+      <Link to={`/store/${id}`}>
+        <Card.Img variant="top" src={imageUrl} />
+      </Link>
+
       <Card.Body className="text-center">
-        <Card.Title>{title}</Card.Title>
+        <Link to={`/store/${id}`} style={{ textDecoration: "none", color: "inherit" }}>
+          <Card.Title>{title}</Card.Title>
+        </Link>
+
         <Card.Text>₹{price}</Card.Text>
 
         <Button
