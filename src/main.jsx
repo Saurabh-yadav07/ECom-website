@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 import router from "./router";
-import CartProvider from "./context/cart-context";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+import AuthProvider from "./context/AuthContext";
+import CartProvider from "./context/CartContext";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <AuthProvider>
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
+  </AuthProvider>
 );

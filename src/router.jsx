@@ -5,6 +5,8 @@ import Store from "./pages/Store";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -13,16 +15,29 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
 
-      //  Product list
-      { path: "store", element: <Store /> },
+      {
+        path: "store",
+        element: (
+          <ProtectedRoute>
+            <Store />
+          </ProtectedRoute>
+        ),
+      },
 
-      //  Single product page (DYNAMIC ROUTE)
-      { path: "store/:productId", element: <ProductDetails /> },
+      {
+        path: "store/:productId",
+        element: (
+          <ProtectedRoute>
+            <ProductDetails />
+          </ProtectedRoute>
+        ),
+      },
 
       { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> }
-    ]
-  }
+      { path: "contact", element: <Contact /> },
+      { path: "login", element: <Login /> },
+    ],
+  },
 ]);
 
 export default router;

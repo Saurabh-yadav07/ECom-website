@@ -1,5 +1,5 @@
 import { Modal, ListGroup, Button, Image } from "react-bootstrap";
-import { useCart } from "../../context/cart-context";
+import { useCart } from "../../context/CartContext";
 
 function Cart({ show, onHide }) {
   const { cartItems, deleteFromCart } = useCart();

@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useCart } from "../context/cart-context";
+import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
