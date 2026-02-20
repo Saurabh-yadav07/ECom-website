@@ -1,36 +1,86 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
-const CartContext = createContext();
+export const CartContext = createContext();
 
-const CartProvider = ({ children }) => {
+function CartProvider({ children }) {
+  const authCtx = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (item) => {
-    setCartItems((prev) => {
-      const existingItem = prev.find(p => p.id === item.id);
+  const userCartKey = authCtx.email
+    ? authCtx.email.replace(/[@.]/g, "")
+    : "";
 
-      if (existingItem) {
-        return prev.map(p =>
-          p.id === item.id
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
-        );
-      }
+  // ✅ FETCH CART
+  const fetchCartItems = async () => {
+    if (!userCartKey) return;
 
-      return [...prev, { ...item, quantity: 1 }];
-    });
+    try {
+      const response = await fetch(
+        `https://crudcrud.com/api/e3c6bf5a8e0d4500a28913db29cace09/cart${userCartKey}`
+      );
+
+      const data = await response.json();
+      setCartItems(data);
+    } catch (err) {
+      console.log("Error fetching cart:", err);
+    }
   };
 
-  const deleteFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  // ✅ ADD TO CART
+  const addToCart = async (item) => {
+    if (!userCartKey) return;
+
+    try {
+      await fetch(
+        `https://crudcrud.com/api/e3c6bf5a8e0d4500a28913db29cace09/cart${userCartKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item),
+        }
+      );
+
+      fetchCartItems(); // refresh cart
+    } catch (err) {
+      console.log("Error adding item:", err);
+    }
+  };
+
+  // ✅ DELETE ITEM
+  const deleteFromCart = async (id) => {
+    if (!userCartKey) return;
+
+    try {
+      await fetch(
+        `https://crudcrud.com/api/e3c6bf5a8e0d4500a28913db29cace09/cart${userCartKey}/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      fetchCartItems();
+    } catch (err) {
+      console.log("Error deleting item:", err);
+    }
+  };
+
+  const value = {
+    cartItems,
+    addToCart,
+    deleteFromCart,
+    fetchCartItems,
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, deleteFromCart }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
-};
+}
 
-export const useCart = () => useContext(CartContext);
 export default CartProvider;
+
+export const useCart = () => {
+  return useContext(CartContext);
+};

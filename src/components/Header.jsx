@@ -1,33 +1,35 @@
-import { NavLink } from "react-router-dom";
 import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
-function Header(props) {
+function Header({ onShowCart }) {
   const authCtx = useContext(AuthContext);
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand>My Store</Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/">
+          My Store
+        </Navbar.Brand>
 
         <Nav className="ms-auto">
-          <NavLink to="/" className="nav-link">
+          <Nav.Link as={NavLink} to="/">
             Home
-          </NavLink>
+          </Nav.Link>
 
-          <NavLink to="/store" className="nav-link">
+          <Nav.Link as={NavLink} to="/store">
             Store
-          </NavLink>
+          </Nav.Link>
 
-          <NavLink to="/about" className="nav-link">
+          <Nav.Link as={NavLink} to="/about">
             About
-          </NavLink>
+          </Nav.Link>
 
           {!authCtx.isLoggedIn && (
-            <NavLink to="/login" className="nav-link">
+            <Nav.Link as={NavLink} to="/login">
               Login
-            </NavLink>
+            </Nav.Link>
           )}
 
           {authCtx.isLoggedIn && (
@@ -40,7 +42,7 @@ function Header(props) {
           )}
 
           <button
-            onClick={props.onShowCart}
+            onClick={onShowCart}
             className="btn btn-primary ms-3"
           >
             Cart

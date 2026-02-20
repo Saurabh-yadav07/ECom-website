@@ -7,6 +7,7 @@ function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
@@ -23,9 +24,7 @@ function Login() {
             password: passwordRef.current.value,
             returnSecureToken: true,
           }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
@@ -35,9 +34,8 @@ function Login() {
         throw new Error(data.error.message || "Authentication failed!");
       }
 
-      authCtx.login(data.idToken);
+      authCtx.login(data.idToken, emailRef.current.value);
       navigate("/store");
-
     } catch (err) {
       setError(err.message);
     }
@@ -47,9 +45,7 @@ function Login() {
     <Container className="mt-5 d-flex justify-content-center">
       <Card style={{ width: "400px" }} className="p-4 shadow">
         <h3 className="text-center mb-4">Login</h3>
-
         {error && <Alert variant="danger">{error}</Alert>}
-
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
