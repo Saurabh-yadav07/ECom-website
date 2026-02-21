@@ -1,23 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import Store from "./pages/Store";
-import ProductDetails from "./pages/ProductDetails";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+//  Lazy imports
+const Home = lazy(() => import("./pages/Home"));
+const Store = lazy(() => import("./pages/Store"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Login = lazy(() => import("./pages/Login"));
+
+//  Suspense Wrapper
+const suspenseWrapper = (Component) => (
+  <Suspense fallback={<div className="text-center mt-5">Loading...</div>}>
+    {Component}
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: suspenseWrapper(<Home />) },
 
       {
         path: "store",
-        element: (
+        element: suspenseWrapper(
           <ProtectedRoute>
             <Store />
           </ProtectedRoute>
@@ -26,16 +36,16 @@ const router = createBrowserRouter([
 
       {
         path: "store/:productId",
-        element: (
+        element: suspenseWrapper(
           <ProtectedRoute>
             <ProductDetails />
           </ProtectedRoute>
         ),
       },
 
-      { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> },
-      { path: "login", element: <Login /> },
+      { path: "about", element: suspenseWrapper(<About />) },
+      { path: "contact", element: suspenseWrapper(<Contact />) },
+      { path: "login", element: suspenseWrapper(<Login />) },
     ],
   },
 ]);

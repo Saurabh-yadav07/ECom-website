@@ -11,7 +11,7 @@ function CartProvider({ children }) {
     ? authCtx.email.replace(/[@.]/g, "")
     : "";
 
-  // ✅ FETCH CART
+  //  FETCH CART
   const fetchCartItems = async () => {
     if (!userCartKey) return;
 
@@ -27,7 +27,7 @@ function CartProvider({ children }) {
     }
   };
 
-  // ✅ ADD TO CART
+  // ADD TO CART
   const addToCart = async (item) => {
     if (!userCartKey) return;
 
@@ -47,7 +47,7 @@ function CartProvider({ children }) {
     }
   };
 
-  // ✅ DELETE ITEM
+  // DELETE ITEM
   const deleteFromCart = async (id) => {
     if (!userCartKey) return;
 
